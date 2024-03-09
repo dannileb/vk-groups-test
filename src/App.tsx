@@ -1,25 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  AppRoot,
+  PanelHeader,
+  SplitCol,
+  SplitLayout,
+  usePlatform,
+  AdaptivityProvider,
+  ConfigProvider,
+} from "@vkontakte/vkui";
 
+import "@vkontakte/vkui/dist/vkui.css";
+import { GroupPage } from "./components/GroupPage/GroupPage";
 function App() {
+  const platform = usePlatform();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ConfigProvider>
+      <AdaptivityProvider>
+        <AppRoot>
+          <SplitLayout
+            header={platform !== "vkcom" && <PanelHeader delimiter="none" />}
+          >
+            <SplitCol autoSpaced>
+              <GroupPage />
+            </SplitCol>
+          </SplitLayout>
+        </AppRoot>
+      </AdaptivityProvider>
+    </ConfigProvider>
   );
 }
 

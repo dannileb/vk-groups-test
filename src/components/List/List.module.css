@@ -1,0 +1,8 @@
+.Wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.Heading {
+  margin-bottom: 0.5em;
+}

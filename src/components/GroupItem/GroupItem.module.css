@@ -1,0 +1,13 @@
+.Wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.Wrapper_closed {
+  color: gray;
+}
+.Heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
