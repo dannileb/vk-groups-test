@@ -13,20 +13,20 @@ export const GroupItem: FC<GroupType> = ({
   friends,
 }) => {
   return (
-    <li
+    <div
       key={id}
       className={`${Styles.Wrapper} ${closed ? Styles.Wrapper_closed : ""}`}
     >
       <h3 className={Styles.Heading}>
         <span>{name}</span>
         {closed && (
-          <Tooltip placement="right" text="Это закрытая группа">
+          <Tooltip text="Это закрытая группа">
             <Icon24Lock />
           </Tooltip>
         )}
       </h3>
       <p>{`Участников: ${members_count}`}</p>
       {friends && <FriendsList friends={friends} />}
-    </li>
+    </div>
   );
 };

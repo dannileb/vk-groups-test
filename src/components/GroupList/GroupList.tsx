@@ -2,6 +2,7 @@ import { Avatar, SimpleCell } from "@vkontakte/vkui";
 import { GroupItem } from "../GroupItem/GroupItem";
 import { GroupType } from "../../types/types";
 import { FC } from "react";
+import List from "../List/List";
 
 interface GroupListProps {
   groups: GroupType[];
@@ -9,8 +10,9 @@ interface GroupListProps {
 
 export const GroupList: FC<GroupListProps> = ({ groups }) => {
   return (
-    <ul>
-      {groups.map((group) => {
+    <List
+      items={groups}
+      renderItem={(group: GroupType) => {
         return (
           <li key={group.id}>
             <SimpleCell
@@ -27,7 +29,7 @@ export const GroupList: FC<GroupListProps> = ({ groups }) => {
             </SimpleCell>
           </li>
         );
-      })}
-    </ul>
+      }}
+    ></List>
   );
 };

@@ -2,5 +2,6 @@
   display: flex;
 }
 .Heading {
+  cursor: pointer;
   margin-bottom: 0.5em;
 }

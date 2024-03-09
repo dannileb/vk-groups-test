@@ -2,7 +2,12 @@ import { FC, useState } from "react";
 import Styles from "./FriendsList.module.css";
 import { User } from "../../types/types";
 import List from "../List/List";
-import { Avatar, HorizontalCell, HorizontalScroll } from "@vkontakte/vkui";
+import {
+  Avatar,
+  HorizontalCell,
+  HorizontalScroll,
+  UsersStack,
+} from "@vkontakte/vkui";
 
 interface FriendsListProps {
   friends: User[];
@@ -16,7 +21,7 @@ export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
   };
 
   return (
-    <div>
+    <>
       <p onClick={handleClick} className={Styles.Heading}>
         Друзей в группе: {friends.length}
       </p>
@@ -32,13 +37,18 @@ export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
                 subtitle={friend.last_name}
                 hasHover={false}
               >
-                <Avatar initials={friend.first_name.at(0)} size={56} />
+                <Avatar
+                  initials={`${friend.first_name.at(0)}${friend.last_name.at(
+                    0
+                  )}`}
+                  size={56}
+                />
               </HorizontalCell>
             )}
             className={Styles.Wrapper}
           />
         </HorizontalScroll>
       )}
-    </div>
+    </>
   );
 };

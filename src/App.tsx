@@ -6,6 +6,7 @@ import {
   usePlatform,
   AdaptivityProvider,
   ConfigProvider,
+  View,
 } from "@vkontakte/vkui";
 
 import "@vkontakte/vkui/dist/vkui.css";
