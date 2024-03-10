@@ -39,8 +39,8 @@ export const GroupPage = () => {
               <>
                 <SubnavigationBar>
                   <Div className={Styles.ColorWrapper}>
+                    <Subhead>Цвет аватарки</Subhead>
                     <FormLayoutGroup mode="horizontal">
-                      <Subhead>Цвет</Subhead>
                       <Div className={Styles.ColorWrapper}>
                         {groups.colors.map((color) => {
                           return (
