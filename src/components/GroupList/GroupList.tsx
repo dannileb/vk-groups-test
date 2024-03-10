@@ -3,6 +3,7 @@ import { GroupItem } from "../GroupItem/GroupItem";
 import { GroupType } from "../../types/types";
 import { FC } from "react";
 import List from "../List/List";
+import Styles from "./GroupList.module.css";
 
 interface GroupListProps {
   groups: GroupType[];
@@ -14,7 +15,7 @@ export const GroupList: FC<GroupListProps> = ({ groups }) => {
       items={groups}
       renderItem={(group: GroupType) => {
         return (
-          <li key={group.id}>
+          <li key={group.id} className={Styles.Item}>
             <SimpleCell
               style={{ alignItems: "start" }}
               before={
@@ -30,6 +31,7 @@ export const GroupList: FC<GroupListProps> = ({ groups }) => {
           </li>
         );
       }}
+      className={Styles.Wrapper}
     ></List>
   );
 };

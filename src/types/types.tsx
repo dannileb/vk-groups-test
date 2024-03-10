@@ -19,6 +19,9 @@ export interface User {
 export interface UseGroupsType {
   response: GetGroupsResponse | undefined;
   data: GroupType[];
-  colors: string[];
-  privacy: string[];
+  filters: FilterObject;
+  filtersValues: FilterObject;
+}
+export interface FilterObject {
+  [key: string]: any;
 }

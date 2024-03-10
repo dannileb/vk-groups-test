@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
 import { API_URL, getData } from "../utils/api-utils";
-import { GetGroupsResponse, GroupType, UseGroupsType } from "../types/types";
+import {
+  FilterObject,
+  GetGroupsResponse,
+  GroupType,
+  UseGroupsType,
+} from "../types/types";
+import { useGroupFiltersStore } from "../stores/group-store";
 
-export const useGroups = (): UseGroupsType => {
+export const useGroups = (filters: string[]): UseGroupsType => {
   const [response, setResponse] = useState<GetGroupsResponse>();
   const [groups, setGroups] = useState<GroupType[]>([]);
+  const [filtersNames, setFiltersNames] = useState<FilterObject>({});
+  const [filtersValues, setFiltersValues] = useState<FilterObject>({});
+  const groupsFiltersStore = useGroupFiltersStore();
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -12,6 +21,16 @@ export const useGroups = (): UseGroupsType => {
       setResponse(response);
       if (response.data) {
         setGroups(response.data);
+        groupsFiltersStore.setGroups(response.data);
+        const filtersNames: FilterObject = {};
+        filters.forEach((filter) => {
+          const filtersArray = response?.data?.map((group) => {
+            return group[filter as keyof GroupType];
+          });
+          filtersNames[filter] = Array.from(new Set(filtersArray));
+        });
+        setFiltersNames(filtersNames);
+        setFiltersValues(filtersNames);
       }
     };
     const timeout = setTimeout(() => {
@@ -23,29 +42,10 @@ export const useGroups = (): UseGroupsType => {
     };
   }, []);
 
-  const colors = [
-    ...cleanArray(
-      response?.data?.map((group) => {
-        return group.avatar_color;
-      })
-    ),
-    "all",
-  ].map(String);
-  const privacy = [
-    ...cleanArray(
-      response?.data?.map((group) => {
-        return group.closed;
-      })
-    ),
-    "all",
-  ].map(String);
-
-  return { response, data: groups, colors, privacy };
+  return {
+    response,
+    data: groups,
+    filters: filtersNames,
+    filtersValues: filtersValues,
+  };
 };
-
-function cleanArray<T>(arr: (T | undefined)[] | undefined): T[] {
-  const filteredArray: T[] = Array.from(
-    new Set(arr?.filter((item): item is T => item !== undefined))
-  );
-  return filteredArray;
-}

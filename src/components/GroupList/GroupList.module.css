@@ -1,0 +1,9 @@
+.Wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  align-items: center;
+}
+.Item {
+  flex: 1;
+}
