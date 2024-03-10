@@ -24,20 +24,20 @@ export const useGroups = () => {
   }, []);
 
   const colors = [
-    "all",
     ...cleanArray(
       response?.data?.map((group) => {
         return group.avatar_color;
       })
     ),
+    "all",
   ];
   const privacy = [
-    "all",
     ...cleanArray(
       response?.data?.map((group) => {
         return group.closed;
       })
     ),
+    "all",
   ];
 
   return { response, data: groups, colors, privacy };

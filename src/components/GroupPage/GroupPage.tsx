@@ -1,6 +1,8 @@
 import {
   Checkbox,
+  Div,
   FormItem,
+  FormLayoutGroup,
   Group,
   Header,
   Panel,
@@ -9,20 +11,15 @@ import {
   Placeholder,
   Separator,
   Spacing,
+  Subhead,
   SubnavigationBar,
-  SubnavigationButton,
   View,
 } from "@vkontakte/vkui";
 import Styles from "./GroupPage.module.css";
 import { GroupList } from "../GroupList/GroupList";
 import { useGroups } from "../../utils/hooks/group";
 import { Icon56UsersOutline } from "@vkontakte/icons";
-const FILTERS_STYLE = [
-  { value: "Вечерний", label: "Вечерний" },
-  { value: "Деловой", label: "Деловой" },
-  { value: "Повседневный", label: "Повседневный" },
-  { value: "Спортивный", label: "Спортивный" },
-];
+
 export const GroupPage = () => {
   const groups = useGroups();
   console.log(groups);
@@ -41,28 +38,30 @@ export const GroupPage = () => {
             ) : (
               <>
                 <SubnavigationBar>
-                  <FormItem top="Цвета">
-                    <div className={Styles.CheckboxesWrapper}>
-                      {groups.colors.map((color) => {
-                        return (
-                          <Checkbox key={color} value={color}>
-                            {color === "all" ? (
-                              <span>Все</span>
-                            ) : (
-                              <div
-                                style={{
-                                  backgroundColor: color,
-                                }}
-                                className={Styles.CheckboxColor}
-                              ></div>
-                            )}
-                          </Checkbox>
-                        );
-                      })}
-                    </div>
-                  </FormItem>
-                  <FormItem top="Тип приватности">
-                    <div className={Styles.CheckboxesWrapper}>
+                  <Div className={Styles.ColorWrapper}>
+                    <FormLayoutGroup mode="horizontal">
+                      <Subhead>Цвет</Subhead>
+                      <Div className={Styles.ColorWrapper}>
+                        {groups.colors.map((color) => {
+                          return (
+                            <Checkbox key={color} value={color}>
+                              {color === "all" ? (
+                                <span>Все</span>
+                              ) : (
+                                <div
+                                  style={{
+                                    backgroundColor: color,
+                                  }}
+                                  className={Styles.CheckboxColor}
+                                ></div>
+                              )}
+                            </Checkbox>
+                          );
+                        })}
+                      </Div>
+                    </FormLayoutGroup>
+                    <FormLayoutGroup>
+                      <Subhead>Тип приватности</Subhead>
                       {groups.privacy.map((privacyItem, index) => {
                         return (
                           <Checkbox key={index} value={privacyItem.toString()}>
@@ -76,13 +75,14 @@ export const GroupPage = () => {
                           </Checkbox>
                         );
                       })}
-                    </div>
-                  </FormItem>
-                </SubnavigationBar>
-                <SubnavigationBar>
-                  <SubnavigationButton>
-                    В группе есть мои друзья
-                  </SubnavigationButton>
+                    </FormLayoutGroup>
+                    <FormLayoutGroup>
+                      <Subhead>Наличие друзей</Subhead>
+                      <Checkbox value={"false"} onClick={() => {}}>
+                        В группе есть мои друзья
+                      </Checkbox>
+                    </FormLayoutGroup>
+                  </Div>
                 </SubnavigationBar>
                 <Spacing size={24}>
                   <Separator />
