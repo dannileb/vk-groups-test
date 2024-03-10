@@ -1,8 +1,4 @@
 import {
-  Checkbox,
-  Div,
-  FormItem,
-  FormLayoutGroup,
   Group,
   Header,
   Panel,
@@ -11,18 +7,15 @@ import {
   Placeholder,
   Separator,
   Spacing,
-  Subhead,
-  SubnavigationBar,
   View,
 } from "@vkontakte/vkui";
-import Styles from "./GroupPage.module.css";
 import { GroupList } from "../GroupList/GroupList";
-import { useGroups } from "../../utils/hooks/group";
+import { useGroups } from "../../hooks/useGroups";
 import { Icon56UsersOutline } from "@vkontakte/icons";
+import { FiltersBar } from "../FiltersBar/FiltersBar";
 
 export const GroupPage = () => {
   const groups = useGroups();
-  console.log(groups);
   return (
     <View activePanel="groups">
       <Panel id="groups" aria-live="polite" aria-busy={groups === undefined}>
@@ -37,53 +30,7 @@ export const GroupPage = () => {
               </Placeholder>
             ) : (
               <>
-                <SubnavigationBar>
-                  <Div className={Styles.ColorWrapper}>
-                    <Subhead>Цвет аватарки</Subhead>
-                    <FormLayoutGroup mode="horizontal">
-                      <Div className={Styles.ColorWrapper}>
-                        {groups.colors.map((color) => {
-                          return (
-                            <Checkbox key={color} value={color}>
-                              {color === "all" ? (
-                                <span>Все</span>
-                              ) : (
-                                <div
-                                  style={{
-                                    backgroundColor: color,
-                                  }}
-                                  className={Styles.CheckboxColor}
-                                ></div>
-                              )}
-                            </Checkbox>
-                          );
-                        })}
-                      </Div>
-                    </FormLayoutGroup>
-                    <FormLayoutGroup>
-                      <Subhead>Тип приватности</Subhead>
-                      {groups.privacy.map((privacyItem, index) => {
-                        return (
-                          <Checkbox key={index} value={privacyItem.toString()}>
-                            <span>
-                              {privacyItem === "all"
-                                ? "Все"
-                                : privacyItem
-                                ? "Закрытые"
-                                : "Открытые"}
-                            </span>
-                          </Checkbox>
-                        );
-                      })}
-                    </FormLayoutGroup>
-                    <FormLayoutGroup>
-                      <Subhead>Наличие друзей</Subhead>
-                      <Checkbox value={"false"} onClick={() => {}}>
-                        В группе есть мои друзья
-                      </Checkbox>
-                    </FormLayoutGroup>
-                  </Div>
-                </SubnavigationBar>
+                <FiltersBar colors={groups.colors} privacy={groups.privacy} />
                 <Spacing size={24}>
                   <Separator />
                 </Spacing>

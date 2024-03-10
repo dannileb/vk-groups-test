@@ -7,3 +7,6 @@
   display: flex;
   flex-wrap: wrap;
 }
+.Subhead {
+  margin-bottom: 1em;
+}

@@ -16,3 +16,9 @@ export interface User {
   first_name: string;
   last_name: string;
 }
+export interface UseGroupsType {
+  response: GetGroupsResponse | undefined;
+  data: GroupType[];
+  colors: string[];
+  privacy: string[];
+}

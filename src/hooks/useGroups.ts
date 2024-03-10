@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { API_URL, getData } from "../api-utils";
-import { GetGroupsResponse, GroupType } from "../../types/types";
+import { API_URL, getData } from "../utils/api-utils";
+import { GetGroupsResponse, GroupType, UseGroupsType } from "../types/types";
 
-export const useGroups = () => {
+export const useGroups = (): UseGroupsType => {
   const [response, setResponse] = useState<GetGroupsResponse>();
   const [groups, setGroups] = useState<GroupType[]>([]);
 
@@ -30,7 +30,7 @@ export const useGroups = () => {
       })
     ),
     "all",
-  ];
+  ].map(String);
   const privacy = [
     ...cleanArray(
       response?.data?.map((group) => {
@@ -38,7 +38,7 @@ export const useGroups = () => {
       })
     ),
     "all",
-  ];
+  ].map(String);
 
   return { response, data: groups, colors, privacy };
 };
