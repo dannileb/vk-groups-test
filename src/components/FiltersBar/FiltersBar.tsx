@@ -1,5 +1,4 @@
 import {
-  Button,
   Checkbox,
   Div,
   FormLayoutGroup,
@@ -9,7 +8,6 @@ import {
 } from "@vkontakte/vkui";
 import Styles from "./FiltersBar.module.css";
 import { FC, useEffect, useState } from "react";
-import { FilterObject } from "../../types/types";
 import { useGroupFiltersStore } from "../../stores/group-store";
 
 export interface FiltersBarProps {
@@ -22,10 +20,10 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
   const [filterValues, setFilterValues] = useState<FiltersBarProps>(props);
   const groupsFiltersStore = useGroupFiltersStore();
   useEffect(() => {
-    groupsFiltersStore.sort(filterValues);
+    groupsFiltersStore.filter(filterValues);
   }, [filterValues]);
 
-  const buttonAllHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const buttonAllHandler = () => {
     setFilterValues({ ...filterValues, privacy: props.privacy });
   };
   const checkboxHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

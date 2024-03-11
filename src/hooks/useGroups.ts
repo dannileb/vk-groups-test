@@ -2,35 +2,48 @@ import { useEffect, useState } from "react";
 import { API_URL, getData } from "../utils/api-utils";
 import {
   FilterObject,
-  GetGroupsResponse,
   GroupType,
+  ResponseStatus,
   UseGroupsType,
 } from "../types/types";
 import { useGroupFiltersStore } from "../stores/group-store";
 
 export const useGroups = (filters: string[]): UseGroupsType => {
-  const [response, setResponse] = useState<GetGroupsResponse>();
-  const [groups, setGroups] = useState<GroupType[]>([]);
+  const [responseStatus, setResponseStatus] = useState<ResponseStatus>({
+    result: 0,
+    text: "Запрос отправлен",
+    status: null,
+  });
   const [filtersNames, setFiltersNames] = useState<FilterObject>({});
-  const [filtersValues, setFiltersValues] = useState<FilterObject>({});
   const groupsFiltersStore = useGroupFiltersStore();
 
   useEffect(() => {
     const fetchGroup = async () => {
       const response = await getData(API_URL!);
-      setResponse(response);
+      setResponseStatus({
+        result: response.result,
+        text: "Ответ получен",
+        status: 200,
+      });
       if (response.data) {
-        setGroups(response.data);
-        groupsFiltersStore.setGroups(response.data);
+        groupsFiltersStore.setGroups(response.data!);
+
         const filtersNames: FilterObject = {};
+
         filters.forEach((filter) => {
           const filtersArray = response?.data?.map((group) => {
             return group[filter as keyof GroupType];
           });
           filtersNames[filter] = Array.from(new Set(filtersArray));
         });
+
         setFiltersNames(filtersNames);
-        setFiltersValues(filtersNames);
+      } else {
+        setResponseStatus({
+          result: 0,
+          text: "Ошибка запроса на сервер. Попробуйте позже",
+          status: 404,
+        });
       }
     };
     const timeout = setTimeout(() => {
@@ -43,9 +56,7 @@ export const useGroups = (filters: string[]): UseGroupsType => {
   }, []);
 
   return {
-    response,
-    data: groups,
+    response: responseStatus,
     filters: filtersNames,
-    filtersValues: filtersValues,
   };
 };

@@ -2,7 +2,6 @@ export interface GetGroupsResponse {
   result: 1 | 0;
   data?: GroupType[];
 }
-
 export interface GroupType {
   id: number;
   name: string;
@@ -17,11 +16,14 @@ export interface User {
   last_name: string;
 }
 export interface UseGroupsType {
-  response: GetGroupsResponse | undefined;
-  data: GroupType[];
+  response: ResponseStatus;
   filters: FilterObject;
-  filtersValues: FilterObject;
 }
 export interface FilterObject {
   [key: string]: any;
+}
+export interface ResponseStatus {
+  result: 1 | 0;
+  status?: number | null;
+  text: string;
 }

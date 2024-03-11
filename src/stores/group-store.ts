@@ -8,7 +8,7 @@ type State = {
 };
 
 type Action = {
-  sort: (filters: FiltersBarProps) => void;
+  filter: (filters: FiltersBarProps) => void;
   setGroups: (groups: GroupType[]) => void;
 };
 
@@ -18,28 +18,20 @@ export const useGroupFiltersStore = create<State & Action>((set) => ({
   setGroups: (groups) => {
     set(() => ({ groups: groups, displayGroups: groups }));
   },
-  sort: (filters) => {
-    console.log(filters);
+  filter: (filters) => {
     set((state) => {
-      const filteredGroupsByColor = state.groups.filter((group) => {
-        return (
+      const filteredGroups = state.groups.filter((group) => {
+        const colorMatch =
           filters.colors.find((color) => color === group.avatar_color) ===
-          (group.avatar_color || undefined)
-        );
+          (group.avatar_color || undefined);
+        const privacyMatch = filters.privacy.includes(String(group.closed));
+        const friendsMatch =
+          filters.friends.length === 0 || group.friends !== undefined;
+
+        return colorMatch && privacyMatch && friendsMatch;
       });
-      const filteredGroupsByPrivacy = filteredGroupsByColor.filter((group) => {
-        return filters.privacy.find((privacyItem) => {
-          return group.closed === (privacyItem === "true");
-        });
-      });
-      if (filters.friends.length > 0) {
-        const filteredGroupsByFriends = filteredGroupsByPrivacy.filter(
-          (group) => group.friends !== undefined
-        );
-        return { displayGroups: filteredGroupsByFriends };
-      } else {
-        return { displayGroups: filteredGroupsByPrivacy };
-      }
+
+      return { displayGroups: filteredGroups };
     });
   },
 }));
