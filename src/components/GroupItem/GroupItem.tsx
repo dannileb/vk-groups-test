@@ -3,7 +3,12 @@ import { GroupType } from "../../types/types";
 import Styles from "./GroupItem.module.css";
 import { FriendsList } from "../FriendList/FriendsList";
 import { Icon24Lock } from "@vkontakte/icons";
-import { Div, Headline, Text, Tooltip } from "@vkontakte/vkui";
+import {
+  Div,
+  Headline,
+  Text,
+  Tooltip,
+} from "@vkontakte/vkui";
 
 export const GroupItem: FC<GroupType> = ({
   id,
@@ -28,7 +33,9 @@ export const GroupItem: FC<GroupType> = ({
       <Text>
         {members_count ? `Подписчиков: ${members_count}` : `Подписчиков нет`}
       </Text>
-      {friends && <FriendsList friends={friends} />}
+      {friends && 
+          <FriendsList friends={friends} />
+      }
     </Div>
   );
 };

@@ -1,4 +1,4 @@
-import { Avatar, Card, Separator, SimpleCell, Spacing } from "@vkontakte/vkui";
+import { Avatar, SimpleCell } from "@vkontakte/vkui";
 import { GroupItem } from "../GroupItem/GroupItem";
 import { GroupType } from "../../types/types";
 import { FC } from "react";

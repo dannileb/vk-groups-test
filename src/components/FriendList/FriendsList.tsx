@@ -8,14 +8,17 @@ import {
   Footnote,
   HorizontalCell,
   HorizontalScroll,
+  OnboardingTooltip,
   Text,
 } from "@vkontakte/vkui";
+import { useOnboardingStore } from "../../stores/onboarding-store";
 
 interface FriendsListProps {
   friends: User[];
 }
 
 export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
+  const onboardingStore = useOnboardingStore();
   const [showItems, setShowItems] = useState<boolean>(false);
 
   const handleClick = () => {
@@ -24,9 +27,17 @@ export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
 
   return (
     <Div style={{ padding: 0 }}>
-      <Text onClick={handleClick} className={Styles.Heading}>
-        Друзей в группе: {friends.length}
-      </Text>
+      <OnboardingTooltip
+        shown={!onboardingStore.onboarded && onboardingStore.currentStep === 6}
+        text={
+          "Можно кликнуть на количество друзей и увидеть тех, кто подписан на группу"
+        }
+        onClose={() => onboardingStore.nextStep()}
+      >
+        <Text onClick={handleClick} className={Styles.Heading}>
+          Друзей в группе: {friends.length}
+        </Text>
+      </OnboardingTooltip>
       {showItems && (
         <HorizontalScroll>
           <List

@@ -2,6 +2,7 @@ import {
   Checkbox,
   Div,
   FormLayoutGroup,
+  OnboardingTooltip,
   Subhead,
   SubnavigationBar,
   SubnavigationButton,
@@ -9,6 +10,7 @@ import {
 import Styles from "./FiltersBar.module.css";
 import { FC, useEffect, useState } from "react";
 import { useGroupFiltersStore } from "../../stores/group-store";
+import { useOnboardingStore } from "../../stores/onboarding-store";
 
 export interface FiltersBarProps {
   colors: string[];
@@ -19,6 +21,7 @@ export interface FiltersBarProps {
 export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
   const [filterValues, setFilterValues] = useState<FiltersBarProps>(props);
   const groupsFiltersStore = useGroupFiltersStore();
+  const onboardingStore = useOnboardingStore();
   useEffect(() => {
     groupsFiltersStore.filter(filterValues);
   }, [filterValues]);
@@ -65,7 +68,14 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
     <SubnavigationBar>
       <Div className={Styles.ColorWrapper}>
         <Div style={{ padding: 0 }}>
-          <Subhead>Цвет аватарки</Subhead>
+          <OnboardingTooltip
+            shown={onboardingStore.currentStep === 2}
+            placement="top"
+            text={"Можно отфильтровать группы по цвету"}
+            onClose={() => onboardingStore.nextStep()}
+          >
+            <Subhead>Цвет аватарки</Subhead>
+          </OnboardingTooltip>
           <Div className={Styles.ColorWrapper}>
             {props.colors.map((color, index) => {
               if (!color) return <></>;
@@ -86,18 +96,33 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
                 </Checkbox>
               );
             })}
-            <Checkbox
-              checked={filterValues.colors.length === props.colors.length}
-              value={"all"}
-              name="colors"
-              onChange={checkboxHandler}
+            <OnboardingTooltip
+              shown={onboardingStore.currentStep === 3}
+              placement="top"
+              text={
+                "Если не выбрать ни один цвет, отобразятся группы без аватарки"
+              }
+              onClose={() => onboardingStore.nextStep()}
             >
-              Все
-            </Checkbox>
+              <Checkbox
+                checked={filterValues.colors.length === props.colors.length}
+                value={"all"}
+                name="colors"
+                onChange={checkboxHandler}
+              >
+                Все
+              </Checkbox>
+            </OnboardingTooltip>
           </Div>
         </Div>
         <FormLayoutGroup>
-          <Subhead>Тип приватности</Subhead>
+          <OnboardingTooltip
+            shown={onboardingStore.currentStep === 4}
+            text={"Также доступна фильтрация групп по приватности..."}
+            onClose={() => onboardingStore.nextStep()}
+          >
+            <Subhead>Тип приватности</Subhead>
+          </OnboardingTooltip>
           <Div>
             {props.privacy.map((privacyItem, index) => {
               return (
@@ -126,7 +151,13 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
           </Div>
         </FormLayoutGroup>
         <FormLayoutGroup>
-          <Subhead>Наличие друзей</Subhead>
+          <OnboardingTooltip
+            shown={onboardingStore.currentStep === 5}
+            text={"И наличию друзей"}
+            onClose={() => onboardingStore.nextStep()}
+          >
+            <Subhead>Наличие друзей</Subhead>
+          </OnboardingTooltip>
           <Div>
             <Checkbox
               checked={filterValues.friends.includes("true")}

@@ -1,6 +1,7 @@
 import {
   Group,
   Header,
+  OnboardingTooltip,
   Panel,
   PanelHeader,
   PanelSpinner,
@@ -17,9 +18,11 @@ import {
 } from "@vkontakte/icons";
 import { FiltersBar } from "../FiltersBar/FiltersBar";
 import { useGroupFiltersStore } from "../../stores/group-store";
+import { useOnboardingStore } from "../../stores/onboarding-store";
 export const GroupPage = () => {
   const groups = useGroups(["avatar_color", "closed"]);
   const groupsFiltersStore = useGroupFiltersStore();
+  const onboardingStore = useOnboardingStore();
   return (
     <View activePanel="groups">
       <Panel
@@ -43,7 +46,16 @@ export const GroupPage = () => {
                   />
                 </Group>
                 <Group
-                  header={<Header mode="secondary">Группы</Header>}
+                  header={
+                    <OnboardingTooltip
+                      shown={onboardingStore.currentStep === 1}
+                      placement="top"
+                      text={"Здесь показаны полученные группы"}
+                      onClose={() => onboardingStore.nextStep()}
+                    >
+                      <Header mode="secondary">Группы</Header>
+                    </OnboardingTooltip>
+                  }
                   mode="plain"
                 >
                   {groupsFiltersStore.displayGroups.length !== 0 ? (
