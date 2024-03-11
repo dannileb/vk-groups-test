@@ -23,10 +23,10 @@ export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
   };
 
   return (
-    <>
-      <p onClick={handleClick} className={Styles.Heading}>
+    <Div style={{ padding: 0 }}>
+      <Text onClick={handleClick} className={Styles.Heading}>
         Друзей в группе: {friends.length}
-      </p>
+      </Text>
       {showItems && (
         <HorizontalScroll>
           <List
@@ -49,6 +49,6 @@ export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
           />
         </HorizontalScroll>
       )}
-    </>
+    </Div>
   );
 };

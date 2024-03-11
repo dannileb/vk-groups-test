@@ -3,7 +3,7 @@ import { GroupType } from "../../types/types";
 import Styles from "./GroupItem.module.css";
 import { FriendsList } from "../FriendList/FriendsList";
 import { Icon24Lock } from "@vkontakte/icons";
-import { Tooltip } from "@vkontakte/vkui";
+import { Div, Headline, Text, Tooltip } from "@vkontakte/vkui";
 
 export const GroupItem: FC<GroupType> = ({
   id,
@@ -13,20 +13,22 @@ export const GroupItem: FC<GroupType> = ({
   friends,
 }) => {
   return (
-    <div
+    <Div
       key={id}
       className={`${Styles.Wrapper} ${closed ? Styles.Wrapper_closed : ""}`}
     >
-      <h3 className={Styles.Heading}>
+      <Headline className={Styles.Heading}>
         <span>{name}</span>
         {closed && (
           <Tooltip text="Это закрытая группа">
             <Icon24Lock />
           </Tooltip>
         )}
-      </h3>
-      <p>{members_count ? `Участников: ${members_count}` : `Участников нет`}</p>
+      </Headline>
+      <Text>
+        {members_count ? `Подписчиков: ${members_count}` : `Подписчиков нет`}
+      </Text>
       {friends && <FriendsList friends={friends} />}
-    </div>
+    </Div>
   );
 };
