@@ -25,7 +25,7 @@ export const GroupItem: FC<GroupType> = ({
           </Tooltip>
         )}
       </h3>
-      <p>{`Участников: ${members_count}`}</p>
+      <p>{members_count ? `Участников: ${members_count}` : `Участников нет`}</p>
       {friends && <FriendsList friends={friends} />}
     </div>
   );

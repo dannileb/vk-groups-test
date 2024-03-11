@@ -4,4 +4,12 @@
 .Heading {
   cursor: pointer;
   margin-bottom: 0.5em;
+  text-decoration: underline;
+}
+.Cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: gray;
 }

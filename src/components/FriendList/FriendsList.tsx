@@ -4,9 +4,11 @@ import { User } from "../../types/types";
 import List from "../List/List";
 import {
   Avatar,
+  Div,
+  Footnote,
   HorizontalCell,
   HorizontalScroll,
-  UsersStack,
+  Text,
 } from "@vkontakte/vkui";
 
 interface FriendsListProps {
@@ -30,19 +32,17 @@ export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
           <List
             items={friends}
             renderItem={(friend: User, id: number) => (
-              <HorizontalCell
-                key={id}
-                size="s"
-                extraSubtitle={friend.first_name}
-                subtitle={friend.last_name}
-                hasHover={false}
-              >
-                <Avatar
-                  initials={`${friend.first_name.at(0)}${friend.last_name.at(
-                    0
-                  )}`}
-                  size={56}
-                />
+              <HorizontalCell key={id} size="s" hasHover={false}>
+                <Div className={Styles.Cell}>
+                  <Avatar
+                    initials={`${friend.first_name.at(0)}${friend.last_name.at(
+                      0
+                    )}`}
+                    size={56}
+                  />
+                  <Footnote>{friend.first_name}</Footnote>
+                  <Footnote>{friend.last_name}</Footnote>
+                </Div>
               </HorizontalCell>
             )}
             className={Styles.Wrapper}

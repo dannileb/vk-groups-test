@@ -1,5 +1,6 @@
 import {
   Group,
+  Header,
   Panel,
   PanelHeader,
   PanelSpinner,
@@ -31,24 +32,32 @@ export const GroupPage = () => {
           <>
             {groups.response.status === 200 ? (
               <Group>
-                <FiltersBar
-                  colors={groups.filters.avatar_color}
-                  privacy={groups.filters.closed.map(String)}
-                  friends={[]}
-                />
-                <Spacing size={24}>
-                  <Separator />
-                </Spacing>
-                {groupsFiltersStore.displayGroups.length !== 0 ? (
-                  <GroupList groups={groupsFiltersStore.displayGroups} />
-                ) : (
-                  <Placeholder
-                    icon={<Icon56UsersOutline />}
-                    header="Сообществ нет:("
-                  >
-                    Подпишитесь на сообщество или измените настройки фильтрации
-                  </Placeholder>
-                )}
+                <Group
+                  header={<Header mode="secondary">Фильтры</Header>}
+                  mode="plain"
+                >
+                  <FiltersBar
+                    colors={groups.filters.avatar_color}
+                    privacy={groups.filters.closed.map(String)}
+                    friends={[]}
+                  />
+                </Group>
+                <Group
+                  header={<Header mode="secondary">Группы</Header>}
+                  mode="plain"
+                >
+                  {groupsFiltersStore.displayGroups.length !== 0 ? (
+                    <GroupList groups={groupsFiltersStore.displayGroups} />
+                  ) : (
+                    <Placeholder
+                      icon={<Icon56UsersOutline />}
+                      header="Сообществ нет:("
+                    >
+                      Подпишитесь на сообщество или измените настройки
+                      фильтрации
+                    </Placeholder>
+                  )}
+                </Group>
               </Group>
             ) : (
               <Placeholder
