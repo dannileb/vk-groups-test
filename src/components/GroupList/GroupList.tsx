@@ -10,10 +10,13 @@ interface GroupListProps {
 }
 
 export const GroupList: FC<GroupListProps> = ({ groups }) => {
+  const firstGroupWithFriends = groups.find((group) => group.friends);
   return (
     <List
       items={groups}
       renderItem={(group: GroupType) => {
+        const tooltip = group.id === firstGroupWithFriends?.id;
+        const groupProps = {...group, tooltip}
         return (
           <li key={group.id} className={Styles.Item}>
             <SimpleCell
@@ -26,7 +29,7 @@ export const GroupList: FC<GroupListProps> = ({ groups }) => {
                 />
               }
             >
-              <GroupItem {...group} />
+              <GroupItem {...groupProps} />
             </SimpleCell>
           </li>
         );

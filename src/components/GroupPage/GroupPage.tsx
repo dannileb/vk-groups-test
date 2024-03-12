@@ -1,4 +1,5 @@
 import {
+  Caption,
   Group,
   Header,
   OnboardingTooltip,
@@ -6,8 +7,6 @@ import {
   PanelHeader,
   PanelSpinner,
   Placeholder,
-  Separator,
-  Spacing,
   View,
 } from "@vkontakte/vkui";
 import { GroupList } from "../GroupList/GroupList";
@@ -19,10 +18,16 @@ import {
 import { FiltersBar } from "../FiltersBar/FiltersBar";
 import { useGroupFiltersStore } from "../../stores/group-store";
 import { useOnboardingStore } from "../../stores/onboarding-store";
+import { resetOnboarded } from "../../utils/onboarding";
 export const GroupPage = () => {
   const groups = useGroups(["avatar_color", "closed"]);
   const groupsFiltersStore = useGroupFiltersStore();
   const onboardingStore = useOnboardingStore();
+
+  const onboardingAction = () => {
+    onboardingStore.nextStep();
+  };
+
   return (
     <View activePanel="groups">
       <Panel
@@ -51,7 +56,7 @@ export const GroupPage = () => {
                       shown={onboardingStore.currentStep === 1}
                       placement="top"
                       text={"Здесь показаны полученные группы"}
-                      onClose={() => onboardingStore.nextStep()}
+                      onClose={onboardingAction}
                     >
                       <Header mode="secondary">Группы</Header>
                     </OnboardingTooltip>
@@ -70,6 +75,18 @@ export const GroupPage = () => {
                     </Placeholder>
                   )}
                 </Group>
+
+                <Caption
+                  onClick={resetOnboarded}
+                  style={{
+                    color: "grey",
+                    cursor: "pointer",
+                    marginLeft: "16px",
+                  }}
+                  normalize={false}
+                >
+                  Сбросить состояние онбординга
+                </Caption>
               </Group>
             ) : (
               <Placeholder

@@ -15,11 +15,14 @@ import { useOnboardingStore } from "../../stores/onboarding-store";
 
 interface FriendsListProps {
   friends: User[];
+  tooltip?: boolean;
 }
 
-export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
+export const FriendsList: FC<FriendsListProps> = ({ friends, tooltip }) => {
   const onboardingStore = useOnboardingStore();
   const [showItems, setShowItems] = useState<boolean>(false);
+  const [nextStepAbility, setNextStepAbility] = useState<boolean>(false);
+  const [accentTooltip, setAccentTooltip] = useState<boolean>(true);
 
   const handleClick = () => {
     setShowItems(!showItems);
@@ -27,17 +30,43 @@ export const FriendsList: FC<FriendsListProps> = ({ friends }) => {
 
   return (
     <Div style={{ padding: 0 }}>
-      <OnboardingTooltip
-        shown={!onboardingStore.onboarded && onboardingStore.currentStep === 6}
-        text={
-          "Можно кликнуть на количество друзей и увидеть тех, кто подписан на группу"
-        }
-        onClose={() => onboardingStore.nextStep()}
-      >
+      {tooltip ? (
+        <OnboardingTooltip
+          shown={
+            !onboardingStore.onboarded && onboardingStore.currentStep === 6
+          }
+          text={
+            "Можно кликнуть на количество друзей и увидеть тех, кто подписан на группу"
+          }
+          appearance={accentTooltip ? "accent" : "neutral"}
+          placement="top"
+          onClose={() => {
+            if (nextStepAbility) {
+              onboardingStore.nextStep();
+              onboardingStore.setModalId("onboardingFinish");
+              setNextStepAbility(false);
+            } else {
+              setShowItems(true);
+              setAccentTooltip(false);
+              const timeout = setTimeout(() => {
+                setShowItems(false);
+                setNextStepAbility(true);
+                setAccentTooltip(true);
+                clearInterval(timeout);
+              }, 1500);
+            }
+          }}
+        >
+          <Text onClick={handleClick} className={Styles.Heading}>
+            Друзей в группе: {friends.length}
+          </Text>
+        </OnboardingTooltip>
+      ) : (
         <Text onClick={handleClick} className={Styles.Heading}>
           Друзей в группе: {friends.length}
         </Text>
-      </OnboardingTooltip>
+      )}
+
       {showItems && (
         <HorizontalScroll>
           <List

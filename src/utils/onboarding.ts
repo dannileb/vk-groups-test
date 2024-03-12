@@ -4,3 +4,6 @@ export const setOnboarded = () => {
 export const getOnboarded = () => {
   return localStorage.getItem("onboarded");
 };
+export const resetOnboarded = () => {
+  localStorage.removeItem("onboarded");
+};

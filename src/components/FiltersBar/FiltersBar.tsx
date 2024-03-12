@@ -20,6 +20,8 @@ export interface FiltersBarProps {
 
 export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
   const [filterValues, setFilterValues] = useState<FiltersBarProps>(props);
+  const [nextStepAbility, setNextStepAbility] = useState<boolean>(false);
+  const [accentTooltip, setAccentTooltip] = useState<boolean>(true);
   const groupsFiltersStore = useGroupFiltersStore();
   const onboardingStore = useOnboardingStore();
   useEffect(() => {
@@ -29,6 +31,7 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
   const buttonAllHandler = () => {
     setFilterValues({ ...filterValues, privacy: props.privacy });
   };
+
   const checkboxHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checkBoxValue = event.target.value;
 
@@ -72,7 +75,41 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
             shown={onboardingStore.currentStep === 2}
             placement="top"
             text={"Можно отфильтровать группы по цвету"}
-            onClose={() => onboardingStore.nextStep()}
+            appearance={accentTooltip ? "accent" : "neutral"}
+            onClose={() => {
+              if (nextStepAbility) {
+                onboardingStore.nextStep();
+                setNextStepAbility(false);
+              } else {
+                let onboardingColors: string[] = [];
+                let onboardingColorIndex = 0;
+                setFilterValues({
+                  ...filterValues,
+                  colors: onboardingColors,
+                });
+                setAccentTooltip(false);
+                const interval = setInterval(() => {
+                  if (onboardingColorIndex < 3) {
+                    onboardingColors.push(props.colors[onboardingColorIndex]);
+                    setFilterValues({
+                      ...filterValues,
+                      colors: onboardingColors,
+                    });
+                    onboardingColorIndex++;
+                  }
+                  if (onboardingColorIndex === 3) {
+                    console.log(onboardingColorIndex);
+                    clearInterval(interval);
+                    setFilterValues({
+                      ...filterValues,
+                      colors: props.colors,
+                    });
+                    setNextStepAbility(true);
+                    setAccentTooltip(true);
+                  }
+                }, 1000);
+              }
+            }}
           >
             <Subhead>Цвет аватарки</Subhead>
           </OnboardingTooltip>
@@ -102,7 +139,29 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
               text={
                 "Если не выбрать ни один цвет, отобразятся группы без аватарки"
               }
-              onClose={() => onboardingStore.nextStep()}
+              appearance={accentTooltip ? "accent" : "neutral"}
+              onClose={() => {
+                if (nextStepAbility) {
+                  onboardingStore.nextStep();
+                  setNextStepAbility(false);
+                } else {
+                  setAccentTooltip(false);
+                  let onboardingColors: string[] = [];
+                  setFilterValues({
+                    ...filterValues,
+                    colors: onboardingColors,
+                  });
+                  const timeout = setTimeout(() => {
+                    setFilterValues({
+                      ...filterValues,
+                      colors: props.colors,
+                    });
+                    setNextStepAbility(true);
+                    setAccentTooltip(true);
+                    clearInterval(timeout);
+                  }, 1500);
+                }
+              }}
             >
               <Checkbox
                 checked={filterValues.colors.length === props.colors.length}
@@ -119,7 +178,30 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
           <OnboardingTooltip
             shown={onboardingStore.currentStep === 4}
             text={"Также доступна фильтрация групп по приватности..."}
-            onClose={() => onboardingStore.nextStep()}
+            appearance={accentTooltip ? "accent" : "neutral"}
+            placement="top"
+            onClose={() => {
+              if (nextStepAbility) {
+                onboardingStore.nextStep();
+                setNextStepAbility(false);
+              } else {
+                let onboardingPrivacy: string[] = ["true"];
+                setFilterValues({
+                  ...filterValues,
+                  privacy: onboardingPrivacy,
+                });
+                setAccentTooltip(false);
+                const timeout = setTimeout(() => {
+                  setFilterValues({
+                    ...filterValues,
+                    privacy: props.privacy,
+                  });
+                  setNextStepAbility(true);
+                  setAccentTooltip(true);
+                  clearInterval(timeout);
+                }, 1500);
+              }
+            }}
           >
             <Subhead>Тип приватности</Subhead>
           </OnboardingTooltip>
@@ -154,7 +236,30 @@ export const FiltersBar: FC<FiltersBarProps> = (props: FiltersBarProps) => {
           <OnboardingTooltip
             shown={onboardingStore.currentStep === 5}
             text={"И наличию друзей"}
-            onClose={() => onboardingStore.nextStep()}
+            appearance={accentTooltip ? "accent" : "neutral"}
+            placement="top"
+            onClose={() => {
+              if (nextStepAbility) {
+                onboardingStore.nextStep();
+                setNextStepAbility(false);
+              } else {
+                let onboadringFriends: string[] = ["true"];
+                setFilterValues({
+                  ...filterValues,
+                  friends: onboadringFriends,
+                });
+                setAccentTooltip(false);
+                const timeout = setTimeout(() => {
+                  setFilterValues({
+                    ...filterValues,
+                    friends: props.friends,
+                  });
+                  setNextStepAbility(true);
+                  setAccentTooltip(true);
+                  clearInterval(timeout);
+                }, 1500);
+              }
+            }}
           >
             <Subhead>Наличие друзей</Subhead>
           </OnboardingTooltip>

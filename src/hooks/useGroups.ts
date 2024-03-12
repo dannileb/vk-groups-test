@@ -7,8 +7,11 @@ import {
   UseGroupsType,
 } from "../types/types";
 import { useGroupFiltersStore } from "../stores/group-store";
+import { getOnboarded } from "../utils/onboarding";
+import { useOnboardingStore } from "../stores/onboarding-store";
 
 export const useGroups = (filters: string[]): UseGroupsType => {
+  const onboardingStore = useOnboardingStore();
   const [responseStatus, setResponseStatus] = useState<ResponseStatus>({
     result: 0,
     text: "Запрос отправлен",
@@ -16,6 +19,14 @@ export const useGroups = (filters: string[]): UseGroupsType => {
   });
   const [filtersNames, setFiltersNames] = useState<FilterObject>({});
   const groupsFiltersStore = useGroupFiltersStore();
+
+  useEffect(() => {
+    const onboarded = getOnboarded();
+    onboardingStore.setOnboarded(onboarded === "true");
+    if (!onboarded && responseStatus.status === 200) {
+      onboardingStore.setModalId("onboardingInvite");
+    }
+  }, [responseStatus]);
 
   useEffect(() => {
     const fetchGroup = async () => {
